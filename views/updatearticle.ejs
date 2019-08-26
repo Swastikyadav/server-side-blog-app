@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Update <%= singleArticle.title %></title>
+    <style>
+        input,
+        textarea {
+            display: block;
+            margin: 10px auto;
+            padding: 5px;
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update <%= singleArticle.title %></h1>
+    <form action="<%= singleArticle.id %>", method="POST">
+        <input type="text", name="title", value="<%= singleArticle.title %>">
+        <textarea name="description" id="" cols="30" rows="10"><%= singleArticle.description %></textarea>
+        <input type="text", name="artAuthor", value="<%= singleArticle.artAuthor %>">
+        <input type="submit">
+    </form>
+</body>
+</html>

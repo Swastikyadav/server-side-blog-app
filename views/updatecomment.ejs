@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Update Comment.</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        form textarea,
+        form input {
+            display: block;
+            margin: 20px auto;
+            width: 400px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Comment.</h1>
+    <form action="/article/comment/update/<%= comment.id %>", method="POST">
+        <textarea name="commentText" id="" cols="30" rows="10"><%= comment.commentText %></textarea>
+        <input type="text", name="comAuthor", value="<%= comment.comAuthor %>">
+        <input type="submit" value="Edit Comment">
+    </form>
+</body>
+</html>

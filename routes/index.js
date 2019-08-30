@@ -1,5 +1,6 @@
 var express = require('express');
 var Article = require('../models/articles');
+var Comment = require('../models/comments');
 var commentRouter = require('../routes/comments');
 
 var router = express.Router();
@@ -17,7 +18,14 @@ router.get('/article/:id', (req, res, next) => {
   id = req.params.id;
   Article.findById(id, (err, singleArticle) => {
     if(err) return next(err);
-    res.render('singlearticle', {singleArticle});
+    // var commentId = singleArticle.comments_id;
+    // commentId.forEach(element => {
+      Comment.find({article_id: id}, (err, articleComments) => {
+        if(err) return next(err);
+        // console.log(articleComments);
+        res.render('singlearticle', {singleArticle, articleComments});
+      })
+    // });
   })
 })
 
@@ -50,12 +58,18 @@ router.post('/article/update/:id', (req, res, next) => {
   });
 });
 
-// Delete an article with its id.
+// Delete an article with its id. (All it's commnets should also get deleted.)
 router.get('/article/delete/:id', (req, res, next) => {
   id = req.params.id;
   Article.findByIdAndDelete(id, (err, deletedArticle) => {
     if(err) return next(err);
-    res.redirect('/');
+    var commentsArr = deletedArticle.comments_id;
+    commentsArr.forEach(c => {
+      Comment.findByIdAndDelete(c, (err, deletedComment) => {
+        if(err) return next(err);
+        res.redirect('/');
+      });
+    });
   });
 });
 

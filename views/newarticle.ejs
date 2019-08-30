@@ -24,7 +24,7 @@
     <form action="/", method="POST">
         <input type="text", name="title", placeholder="Article Title">
         <textarea name="description" id="" cols="30" rows="10">Add Your Story.</textarea>
-        <input type="text", name="artAuthor", placeholder="Author Name">
+        <input type="text", name="artAuthor", value="<%= user.name %>", style="display: none;">
         <input type="submit">
     </form>
 </body>

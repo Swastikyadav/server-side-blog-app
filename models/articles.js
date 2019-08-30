@@ -15,6 +15,10 @@ var articlesSchema = new Schema({
        type: String,
        required: true
    },
+   user_id: {
+       type: Schema.Types.ObjectId,
+       ref: "User"
+   },
    comments_id: {
        type: [Schema.Types.ObjectId],
        ref: "Comment"

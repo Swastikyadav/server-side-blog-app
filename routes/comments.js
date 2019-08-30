@@ -1,7 +1,11 @@
 var express = require('express');
 var Comment = require('../models/comments');
 var Article = require('../models/articles');
+var auth = require('../modules/auth');
 var router = express.Router();
+
+// Below routes will be available only if user is logged in.
+router.use(auth.isLogged);
 
 // Creating new comments, and pushing it to related article.
 router.post('/:id/comments', (req, res, next) => {

@@ -3,6 +3,7 @@ var Article = require('../models/articles');
 var User = require('../models/users');
 var Comment = require('../models/comments');
 var commentRouter = require('../routes/comments');
+var auth = require('../modules/auth');
 
 var router = express.Router();
 
@@ -60,8 +61,11 @@ router.get('/article/:id', (req, res, next) => {
   })
 })
 
+// Below routes will be available only if user is logged in.
+router.use(auth.isLogged);
+
 // Create new articles.
-router.get('/newarticle', (req, res, next) => {
+router.get('/newarticle', (req, res, next) => { 
   res.render('newarticle');
 })
 
@@ -76,6 +80,8 @@ router.post('/', (req, res, next) => {
 router.get('/article/update/:id', (req, res, next) => {
   id = req.params.id;
   Article.findById(id, (err, singleArticle) => {
+    console.log(singleArticle);
+    // if(req.user._id === singleArticle.artAuthor)
     if(err) return next(err);
     res.render('updatearticle', {singleArticle});
   });
@@ -94,13 +100,21 @@ router.get('/article/delete/:id', (req, res, next) => {
   id = req.params.id;
   Article.findByIdAndDelete(id, (err, deletedArticle) => {
     if(err) return next(err);
-    var commentsArr = deletedArticle.comments_id;
-    commentsArr.forEach(c => {
-      Comment.findByIdAndDelete(c, (err, deletedComment) => {
-        if(err) return next(err);
-        res.redirect('/');
-      });
-    });
+    // console.log(deletedArticle);
+    // if(deletedArticle.comments_id) {
+    //   var commentsArr = deletedArticle.comments_id;
+    //   console.log(commentsArr);
+    //   commentsArr.forEach(c => {
+    //     Comment.findByIdAndDelete(c, (err, deletedComment) => {
+    //       if(err) return next(err);
+    //       res.render('index');
+    //     });
+    //   });
+    // } else {
+    //   console.log("no comments");
+    //   res.render('index');
+    // }
+    res.redirect('/');
   });
 });
 

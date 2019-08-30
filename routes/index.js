@@ -16,7 +16,7 @@ router.post('/users/register', (req, res, next) => {
   User.create(req.body, (err, newUser) => {
     if(err) return next(err);
     console.log(newUser);
-    res.redirect('/users/register');
+    res.redirect('/users/login');
   });
 });
 
@@ -106,26 +106,40 @@ router.get('/article/delete/:id', (req, res, next) => {
     if(String(req.user._id) === article.authorId) {
       Article.findByIdAndDelete(id, (err, deletedArticle) => {
         if(err) return next(err);
-        // console.log(deletedArticle);
-        // if(deletedArticle.comments_id) {
-        //   var commentsArr = deletedArticle.comments_id;
-        //   console.log(commentsArr);
-        //   commentsArr.forEach(c => {
-        //     Comment.findByIdAndDelete(c, (err, deletedComment) => {
-        //       if(err) return next(err);
-        //       res.render('index');
-        //     });
-        //   });
-        // } else {
-        //   console.log("no comments");
-        //   res.render('index');
-        // }
-        res.redirect('/');
+        console.log(deletedArticle.comments_id.length);
+        if(deletedArticle.comments_id.length) {
+          var commentsArr = deletedArticle.comments_id;
+          console.log(commentsArr);
+          commentsArr.forEach(c => {
+            Comment.findByIdAndDelete(c, (err, deletedComment) => {
+              if(err) return next(err);
+              // res.redirect('index');  
+            });
+          });
+          res.redirect('/');
+        } else {
+          console.log("no comments");
+          res.redirect('/');
+        }
       });
     } else {
       res.redirect('/');
     }
   });
+});
+
+// LogOut
+router.get('/users/logout', (req, res, next) => {
+  if(req.session) {
+    // delete session object
+    req.session.destroy(function(err) {
+      if(err) {
+        return next(err);
+      } else {
+        return res.redirect('/');
+      } 
+    });
+  }
 });
 
 router.use('/article', commentRouter);

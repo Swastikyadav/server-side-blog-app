@@ -61,7 +61,8 @@
     <div>
             <% if(user) { %>
                 <a href="/article/update/<%= singleArticle.id %>"><button>Update Article</button></a>
-                <a href="/article/delete/<%= singleArticle.id %>"><button>Delete Article</button></a>     
+                <a href="/article/delete/<%= singleArticle.id %>"><button>Delete Article</button></a>
+                <a href="/users/logout"><button>LogOut</button></a>     
             <% } else { %>
                 <a href="/users/register"><button>Register</button></a>
                 <a href="/users/login"><button>LogIn</button></a>

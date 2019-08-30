@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <style>
+        input,
+        textarea {
+            display: block;
+            margin: 10px auto;
+            padding: 5px;
+            width: 400px;
+        }
+        h1,
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Register new user.</h1>
+    <form action="/users/register", method="POST">
+        <input type="text", name="name", placeholder="Enter Name">
+        <input type="email" name="email" placeholder="Enter your email">
+        <input type="password", name="password", placeholder="Password">
+        <input type="submit">
+    </form>
+    <p>Already have an account: <a href="/users/login">LogIn here.</a></p>
+
+</body>
+</html>

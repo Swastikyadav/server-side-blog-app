@@ -3,6 +3,11 @@
   <head>
     <title>Articles</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+      button {
+        padding: 5px;
+      }
+    </style>
   </head>
   <body>
     <h1>List of all articles.</h1>
@@ -17,6 +22,11 @@
 
     <br><br>
 
-    <a href="/newarticle">Create new Article.</a>
+    <% if(user) { %>
+      <a href="/newarticle">Create new Article.</a>      
+    <% } else { %>
+      <a href="/users/register"><button>Register</button></a>
+      <a href="/users/login"><button>LogIn</button></a>
+    <% } %>
   </body>
 </html>

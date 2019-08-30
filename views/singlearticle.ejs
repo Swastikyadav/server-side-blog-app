@@ -59,14 +59,24 @@
         <small>Written by: <strong><%= singleArticle.artAuthor %></strong></small>
     </article>
     <div>
-        <a href="/article/update/<%= singleArticle.id %>"><button>Update Article</button></a>
-        <a href="/article/delete/<%= singleArticle.id %>"><button>Delete Article</button></a>
+            <% if(user) { %>
+                <a href="/article/update/<%= singleArticle.id %>"><button>Update Article</button></a>
+                <a href="/article/delete/<%= singleArticle.id %>"><button>Delete Article</button></a>     
+            <% } else { %>
+                <a href="/users/register"><button>Register</button></a>
+                <a href="/users/login"><button>LogIn</button></a>
+            <% } %>
         
-        <form action="/article/<%= singleArticle.id %>/comments", method="POST">
-            <textarea name="commentText" id="" cols="30" rows="10">Write your comment here...</textarea>
-            <input type="text" name="comAuthor", placeholder="Your Name">
-            <input type="submit", value="Add Comment">
-        </form>
+
+            <% if(user) { %>
+                <form action="/article/<%= singleArticle.id %>/comments", method="POST">
+                    <textarea name="commentText" id="" cols="30" rows="10">Write your comment here...</textarea>
+                    <input type="text" name="comAuthor", placeholder="Your Name">
+                    <input type="submit", value="Add Comment">
+                </form>     
+            <% } else { %>
+                <h3>Please LogIn to be able to add comments.</h3>
+            <% } %>
 
         <div class="comments_section">
             <h4 style="text-align: center">Comments</h4>
@@ -77,8 +87,10 @@
                         <small>commented by: <%= c.comAuthor %></small>
                     </div>
                     <div>
-                        <a href="comment/delete/<%= c.id %>"><span class="delete-btn">X</span></a>
-                        <a href="comment/update/<%= c.id %>"><span class="update-btn">Edit</span></a>
+                        <% if(user) { %>
+                            <a href="comment/delete/<%= c.id %>"><span class="delete-btn">X</span></a>
+                            <a href="comment/update/<%= c.id %>"><span class="update-btn">Edit</span></a>     
+                        <% } %>
                     </div>
                 </div>
             <% }); %>

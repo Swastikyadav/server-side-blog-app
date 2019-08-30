@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var session = require('express-session');
+var mongoStore = require('connect-mongo')(session);
+var auth = require('./modules/auth');
 
 mongoose.connect('mongodb://localhost/blog', {useNewUrlParser: true}, (err) => {
     err ? console.log(err) : console.log("Connected to database.");
@@ -23,6 +26,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// session
+app.use(session({
+  secret: "secret string",
+  resave: true,
+  saveUninitialized: false,
+  store: new mongoStore({mongooseConnection: mongoose.connection}),
+}));
+
+// authorization
+app.use(auth.checkLoggedUser);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

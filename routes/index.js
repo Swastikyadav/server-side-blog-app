@@ -1,9 +1,40 @@
 var express = require('express');
 var Article = require('../models/articles');
+var User = require('../models/users');
 var Comment = require('../models/comments');
 var commentRouter = require('../routes/comments');
 
 var router = express.Router();
+
+// User registration.
+router.get('/users/register', (req, res, next) => {
+  res.render('userregister');
+});
+
+router.post('/users/register', (req, res, next) => {
+  User.create(req.body, (err, newUser) => {
+    if(err) return next(err);
+    console.log(newUser);
+    res.redirect('/users/register');
+  });
+});
+
+// User Login
+router.get('/users/login', (req, res, next) => {
+  res.render('userslogin');
+}); 
+
+router.post('/users/login', (req, res, next) => {
+  var email = req.body.email;
+  var pass = req.body.password;
+  User.findOne({email: email}, (err, user) => {
+    if(err) return next(err);
+    if(!user) return res.redirect('/users/login');
+    if(!user.validatePassword(pass)) return res.redirect('/users/login');
+    req.session.userId = user._id;
+    res.redirect('/');
+  });
+});
 
 /* GET all articles on home page. (Read articles) */
 router.get('/', function(req, res, next) {

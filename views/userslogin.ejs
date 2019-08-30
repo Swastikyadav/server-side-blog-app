@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <style>
+        input,
+        textarea {
+            display: block;
+            margin: 10px auto;
+            padding: 5px;
+            width: 400px;
+        }
+        h1,
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>LogIn Please</h1>
+    <form action="/users/login", method="POST">
+        <input type="email" name="email", placeholder="Email">
+        <input type="password", name="password", placeholder="password">
+        <input type="submit" value="LogIn">
+    </form>
+
+    <p>New User <a href="/users/register">Register here.</a></p>
+</body>
+</html>

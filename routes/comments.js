@@ -23,9 +23,16 @@ router.post('/:id/comments', (req, res, next) => {
 // Delete a comment with its id
 router.get('/comment/delete/:id', (req, res, next) => {
     var id = req.params.id;
-    Comment.findByIdAndDelete(id, (err, deletedComment) => {
-        if(err) return next (err);
-        res.redirect(`/article/${deletedComment.article_id}`);
+    Comment.findById(id, (err, comment) => {
+        if(err) return next(err);
+        if(String(req.user._id) === comment.authorId) {
+            Comment.findByIdAndDelete(id, (err, deletedComment) => {
+                if(err) return next (err);
+                res.redirect(`/article/${deletedComment.article_id}`);
+            });
+        } else {
+            res.redirect('/');
+        }
     });
 });
 
@@ -35,7 +42,11 @@ router.get('/comment/update/:id', (req, res, next) => {
     var id = req.params.id;
     Comment.findById(id, (err, comment) => {
         if(err) return next(err);
-        res.render('updatecomment', {comment});
+        if(String(req.user._id) === comment.authorId) {
+            res.render('updatecomment', {comment});
+        } else {
+            res.redirect('/');
+        }
     });
 });
 

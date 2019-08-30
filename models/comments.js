@@ -14,6 +14,10 @@ var commentsSchema = new Schema({
    article_id: {
        type: Schema.Types.ObjectId,
        ref: "Article",
+   },
+   authorId: {
+       type: String,
+       required: true
    }
 });
 

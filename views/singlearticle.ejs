@@ -72,6 +72,7 @@
                 <form action="/article/<%= singleArticle.id %>/comments", method="POST">
                     <textarea name="commentText" id="" cols="30" rows="10">Write your comment here...</textarea>
                     <input type="text" name="comAuthor", value="<%= user.name %>", style="display: none;">
+                    <input type="text" name="authorId" value="<%= user._id %>">
                     <input type="submit", value="Add Comment">
                 </form>     
             <% } else { %>

@@ -80,10 +80,13 @@ router.post('/', (req, res, next) => {
 router.get('/article/update/:id', (req, res, next) => {
   id = req.params.id;
   Article.findById(id, (err, singleArticle) => {
-    console.log(singleArticle);
-    // if(req.user._id === singleArticle.artAuthor)
+    // console.log(String(req.user._id), singleArticle.authorId);
     if(err) return next(err);
-    res.render('updatearticle', {singleArticle});
+    if(String(req.user._id) === singleArticle.authorId) {
+      res.render('updatearticle', {singleArticle});
+    } else {
+      res.redirect('/');
+    }
   });
 })
 
@@ -98,23 +101,30 @@ router.post('/article/update/:id', (req, res, next) => {
 // Delete an article with its id. (All it's commnets should also get deleted.)
 router.get('/article/delete/:id', (req, res, next) => {
   id = req.params.id;
-  Article.findByIdAndDelete(id, (err, deletedArticle) => {
-    if(err) return next(err);
-    // console.log(deletedArticle);
-    // if(deletedArticle.comments_id) {
-    //   var commentsArr = deletedArticle.comments_id;
-    //   console.log(commentsArr);
-    //   commentsArr.forEach(c => {
-    //     Comment.findByIdAndDelete(c, (err, deletedComment) => {
-    //       if(err) return next(err);
-    //       res.render('index');
-    //     });
-    //   });
-    // } else {
-    //   console.log("no comments");
-    //   res.render('index');
-    // }
-    res.redirect('/');
+  Article.findById(id, (err, article) => {
+    if (err) return next(err);
+    if(String(req.user._id) === article.authorId) {
+      Article.findByIdAndDelete(id, (err, deletedArticle) => {
+        if(err) return next(err);
+        // console.log(deletedArticle);
+        // if(deletedArticle.comments_id) {
+        //   var commentsArr = deletedArticle.comments_id;
+        //   console.log(commentsArr);
+        //   commentsArr.forEach(c => {
+        //     Comment.findByIdAndDelete(c, (err, deletedComment) => {
+        //       if(err) return next(err);
+        //       res.render('index');
+        //     });
+        //   });
+        // } else {
+        //   console.log("no comments");
+        //   res.render('index');
+        // }
+        res.redirect('/');
+      });
+    } else {
+      res.redirect('/');
+    }
   });
 });
 
